@@ -1,4 +1,4 @@
-package com.example.hotelbooking;
+package com.example.hotelbooking.database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -60,5 +60,23 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return hotels;
+    }
+
+    public static List<String> getAllReservations() {
+        List<String> reservations = new ArrayList<>();
+        String sql = "SELECT guest FROM reservations";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)){
+            while(rs.next()) {
+                reservations.add(rs.getString("guest"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return reservations;
     }
 }

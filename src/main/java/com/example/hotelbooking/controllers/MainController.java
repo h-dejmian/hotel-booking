@@ -1,5 +1,6 @@
-package com.example.hotelbooking;
+package com.example.hotelbooking.controllers;
 
+import com.example.hotelbooking.database.DatabaseManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

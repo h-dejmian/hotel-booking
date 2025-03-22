@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.hotelbooking.AddHotelController">
+      fx:controller="com.example.hotelbooking.controllers.AddHotelController">
     <Label text="Dodaj Hotel" style="-fx-font-size: 20px;"/>
     <TextField fx:id="hotelNameField" promptText="Hotel Name"/>
     <Button text="Dodaj" onAction="#saveHotel"/>
