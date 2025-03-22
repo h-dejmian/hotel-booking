@@ -1,6 +1,9 @@
 package com.example.hotelbooking.database;
 
+import com.example.hotelbooking.models.Reservation;
+
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,15 +65,19 @@ public class DatabaseManager {
         return hotels;
     }
 
-    public static List<String> getAllReservations() {
-        List<String> reservations = new ArrayList<>();
+    public static List<Reservation> getAllReservations() {
+        List<Reservation> reservations = new ArrayList<>();
         String sql = "SELECT guest FROM reservations";
 
         try (Connection conn = DriverManager.getConnection(URL);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)){
             while(rs.next()) {
-                reservations.add(rs.getString("guest"));
+                reservations.add(new Reservation(
+                        rs.getInt("id"),
+                        rs.getString("guest"),
+                        LocalDate.parse(rs.getString("date")
+                )));
             }
         }
         catch (SQLException e) {
