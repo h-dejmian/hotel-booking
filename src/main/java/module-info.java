@@ -10,4 +10,5 @@ module com.example.hotelbooking {
     opens com.example.hotelbooking.controllers to javafx.fxml;
     exports com.example.hotelbooking.database;
     opens com.example.hotelbooking.database to javafx.fxml;
+    opens com.example.hotelbooking.models to javafx.base;
 }

@@ -12,6 +12,7 @@ public class AddReservationController {
     private TextField guestNameField;
     @FXML
     private DatePicker datePicker;
+    private int hotelId;
 
     @FXML
     private void saveReservation() {
@@ -23,8 +24,12 @@ public class AddReservationController {
             return;
         }
 
-        DatabaseManager.addReservation(guestName, date.toString());
+        DatabaseManager.addReservation(guestName, date.toString(), hotelId);
         System.out.println("Dodano rezerwację dla: " + guestName);
         ((Stage) guestNameField.getScene().getWindow()).close();
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 }
