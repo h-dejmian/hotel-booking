@@ -13,12 +13,9 @@ public class DatabaseManager {
     static {
         try (Connection conn = DriverManager.getConnection(URL)) {
             conn.createStatement().execute("CREATE TABLE IF NOT EXISTS hotels (id INTEGER PRIMARY KEY, name TEXT)");
-        } catch (SQLException e) {
-            e.printStackTrace();
+            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS reservations (id INTEGER PRIMARY KEY, guest TEXT, date TEXT, hotel_id INTEGER, FOREIGN KEY(hotel_id) REFERENCES hotels(id))");
         }
-        try (Connection conn = DriverManager.getConnection(URL)) {
-            conn.createStatement().execute("CREATE TABLE IF NOT EXISTS reservations (id INTEGER PRIMARY KEY, guest TEXT, date TEXT)");
-        } catch (SQLException e) {
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -22,6 +22,10 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/add-hotel-view.fxml"));
             Scene scene = new Scene(loader.load(), 300, 200);
+
+            AddHotelController addHotelController = loader.getController();
+            addHotelController.setMainController(this);
+
             Stage stage = new Stage();
             stage.setTitle("Nowy Hotel");
             stage.setScene(scene);
@@ -47,6 +51,11 @@ public class MainController {
 
     @FXML
     private void initialize() {
+        loadHotels();
+    }
+
+    public void loadHotels() {
+        hotelList.getItems().clear();
         hotelList.getItems().addAll(DatabaseManager.getAllHotels());
     }
 }

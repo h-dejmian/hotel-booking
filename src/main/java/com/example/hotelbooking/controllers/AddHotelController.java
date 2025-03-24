@@ -8,6 +8,15 @@ import javafx.stage.Stage;
 public class AddHotelController {
     @FXML
     private TextField hotelNameField;
+    @FXML
+    private MainController mainController;
+
+    public AddHotelController() {
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
     @FXML
     private void saveHotel() {
@@ -15,6 +24,7 @@ public class AddHotelController {
         if (!hotelName.isEmpty()) {
             DatabaseManager.addHotel(hotelName);
             System.out.println("Dodano hotel: " + hotelName);
+            mainController.loadHotels();
             ((Stage) hotelNameField.getScene().getWindow()).close();
         }
     }
