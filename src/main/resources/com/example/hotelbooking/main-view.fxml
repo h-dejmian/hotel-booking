@@ -19,18 +19,28 @@
     </padding>
 
     <Label text="Hotel Booking System" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-    <Button text="Dodaj hotel" onAction="#addHotel"/>
-    <Button text="Dodaj rezerwację" onAction="#addReservation"/>
+
+    <HBox alignment="CENTER" spacing="20.0">
+        <Button text="Dodaj hotel" onAction="#addHotel"/>
+        <Button text="Dodaj rezerwację" onAction="#addReservation"/>
+    </HBox>
 
     <HBox alignment="CENTER" spacing="10.0">
-        <ListView fx:id="hotelList"/>
-        <TableView fx:id="reservationList">
-            <columns>
-                <TableColumn fx:id="guestColumn" text="Gość"/>
-                <TableColumn fx:id="dateColumn" text="Data"/>
-                <TableColumn fx:id="deleteColumn" text="Akcja" />
-            </columns>
-        </TableView>
+        <VBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label text="Hotels" style="-fx-font-size: 15px; -fx-font-weight: bold;" />
+            <ListView fx:id="hotelList"/>
+        </VBox>
+
+        <VBox alignment="CENTER_LEFT" spacing="10.0">
+            <Label text="Reservations" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+            <TableView fx:id="reservationList">
+                <columns>
+                    <TableColumn fx:id="guestColumn" text="Gość"/>
+                    <TableColumn fx:id="dateColumn" text="Data"/>
+                    <TableColumn fx:id="deleteColumn" text="Akcja" />
+                </columns>
+            </TableView>
+        </VBox>
     </HBox>
 
 </VBox>
