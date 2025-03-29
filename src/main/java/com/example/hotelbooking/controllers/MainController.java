@@ -45,6 +45,7 @@ public class MainController {
             stage.setTitle("Nowy Hotel");
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,29 +56,20 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/add-reservation-view.fxml"));
             Scene scene = new Scene(loader.load(), 300, 200);
-            Stage stage = new Stage();
-            stage.setTitle("Nowa Rezerwacja");
 
             AddReservationController controller = loader.getController();
             controller.setHotelId(selectedHotelId);
+            controller.setMainController(this);
 
+            Stage stage = new Stage();
+            stage.setTitle("Nowa Rezerwacja");
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    private void deleteReservation() {
-        Reservation selected = reservationList.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            DatabaseManager.deleteReservationById(selected.getId());
-            loadReservationsForHotel(getHotelNameById(selectedHotelId));
-        }
-    }
-
-
 
     @FXML
     private void initialize() {
@@ -148,9 +140,15 @@ public class MainController {
         });
     }
 
-    private void loadReservationsForHotel(String hotelName) {
+    public void loadReservationsForHotel(String hotelName) {
         int hotelId = getHotelIdByName(hotelName);
 
+        if (hotelId != -1) {
+            reservationData.setAll(DatabaseManager.getReservationsByHotelId(hotelId));
+        }
+    }
+
+    public void loadReservationsForHotel(int hotelId) {
         if (hotelId != -1) {
             reservationData.setAll(DatabaseManager.getReservationsByHotelId(hotelId));
         }
