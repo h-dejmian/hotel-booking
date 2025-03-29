@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -102,10 +104,34 @@ public class MainController {
             private final Button deleteButton = new Button("Usuń");
 
             {
+                ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/icons/trash.jpg")));
+                icon.setFitWidth(16);
+                icon.setFitHeight(16);
+                deleteButton.setGraphic(icon);
+
+                deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                deleteButton.setOnMouseEntered(e -> deleteButton.setStyle("-fx-background-color: #ffdddd; -fx-cursor: hand;"));
+                deleteButton.setOnMouseExited(e -> deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;"));
+
                 deleteButton.setOnAction(event -> {
                     Reservation reservation = getTableView().getItems().get(getIndex());
                     DatabaseManager.deleteReservationById(reservation.getId());
                     loadReservationsForHotel(getHotelNameById(selectedHotelId));
+                });
+
+                deleteButton.setOnAction(event -> {
+                    Reservation reservation = getTableView().getItems().get(getIndex());
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Potwierdzenie");
+                    alert.setHeaderText("Usuwanie rezerwacji");
+                    alert.setContentText("Czy na pewno chcesz usunąć tę rezerwację?");
+
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+                            DatabaseManager.deleteReservationById(reservation.getId());
+                            getTableView().getItems().remove(reservation);
+                        }
+                    });
                 });
             }
 
