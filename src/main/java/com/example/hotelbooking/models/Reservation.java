@@ -35,4 +35,8 @@ public class Reservation {
     public LocalDate getDate() {
         return date;
     }
+
+    public int getId() {
+        return id;
+    }
 }

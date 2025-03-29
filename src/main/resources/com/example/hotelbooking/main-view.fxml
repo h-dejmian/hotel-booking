@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TableColumn?>
+
 <VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.hotelbooking.controllers.MainController">
 
@@ -27,6 +28,7 @@
             <columns>
                 <TableColumn fx:id="guestColumn" text="Gość"/>
                 <TableColumn fx:id="dateColumn" text="Data"/>
+                <TableColumn fx:id="deleteColumn" text="Akcja" />
             </columns>
         </TableView>
     </HBox>

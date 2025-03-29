@@ -7,9 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -21,11 +19,14 @@ public class MainController {
     @FXML
     private TableView<Reservation> reservationList;
     private int selectedHotelId = -1;
+    private int selectedReservationId = -1;
 
     @FXML
     private TableColumn<Reservation, String> guestColumn;
     @FXML
     private TableColumn<Reservation, String> dateColumn;
+    @FXML
+    private TableColumn<Reservation, Void> deleteColumn;
 
     private ObservableList<Reservation> reservationData = FXCollections.observableArrayList();
 
@@ -66,6 +67,17 @@ public class MainController {
     }
 
     @FXML
+    private void deleteReservation() {
+        Reservation selected = reservationList.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            DatabaseManager.deleteReservationById(selected.getId());
+            loadReservationsForHotel(getHotelNameById(selectedHotelId));
+        }
+    }
+
+
+
+    @FXML
     private void initialize() {
         loadHotels();
 
@@ -79,6 +91,33 @@ public class MainController {
             if (newValue != null) {
                 selectedHotelId = getHotelIdByName(newValue);
                 loadReservationsForHotel(newValue);
+            }
+        });
+
+        addDeleteButtonToTable();
+    }
+
+    private void addDeleteButtonToTable() {
+        deleteColumn.setCellFactory( param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Usuń");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    Reservation reservation = getTableView().getItems().get(getIndex());
+                    DatabaseManager.deleteReservationById(reservation.getId());
+                    loadReservationsForHotel(getHotelNameById(selectedHotelId));
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                }
+                else {
+                    setGraphic(deleteButton);
+                }
             }
         });
     }
@@ -98,5 +137,9 @@ public class MainController {
 
     private int getHotelIdByName(String name) {
         return DatabaseManager.getHotelIdByName(name);
+    }
+
+    private String getHotelNameById(int id) {
+        return DatabaseManager.getHotelNameById(id);
     }
 }

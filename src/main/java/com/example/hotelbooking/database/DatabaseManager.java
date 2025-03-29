@@ -62,24 +62,6 @@ public class DatabaseManager {
         return hotels;
     }
 
-    public static String getHotelById(int id) {
-        String sql = "SELECT name FROM hotels WHERE id = ?";
-
-        try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            return rs.getString("name");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public static int getHotelIdByName(String name) {
         String sql = "SELECT id FROM hotels WHERE name = ?";
 
@@ -98,6 +80,26 @@ public class DatabaseManager {
         }
 
         return -1;
+    }
+
+    public static String getHotelNameById(int id) {
+        String sql = "SELECT name FROM hotels WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static List<Reservation> getReservationsByHotelId(int hotelId) {
@@ -124,5 +126,21 @@ public class DatabaseManager {
         }
 
         return reservations;
+    }
+
+    public static void deleteReservationById(int id) {
+        String sql = "DELETE FROM reservations WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Deleted reservation with id " + id);
     }
 }
