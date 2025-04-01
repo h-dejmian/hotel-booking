@@ -1,5 +1,6 @@
 package com.example.hotelbooking;
 
+import jakarta.persistence.EntityManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,11 @@ public class MainApplication extends Application {
         stage.setTitle("Hotel Booking");
         stage.setScene(scene);
         stage.show();
+
+        EntityManager em = HibernateUtil.getEntityManager();
+        System.out.println("✅ Połączenie z bazą działa!");
+        em.close();
+        HibernateUtil.close();
     }
 
 
