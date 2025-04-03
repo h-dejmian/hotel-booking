@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Table(name = "reservations")
 public class Reservation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String guest;
     private LocalDate date;
@@ -16,10 +16,13 @@ public class Reservation {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
-    public Reservation(int id, String guest, LocalDate date, int hotel_id) {
-        this.id = id;
+    public Reservation() {
+    }
+
+    public Reservation(String guest, LocalDate date, Hotel hotel) {
         this.guest = guest;
         this.date = date;
+        this.hotel = hotel;
     }
 
     public String getGuest() {
@@ -32,5 +35,13 @@ public class Reservation {
 
     public int getId() {
         return id;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }

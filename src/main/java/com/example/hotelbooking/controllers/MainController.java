@@ -1,6 +1,9 @@
 package com.example.hotelbooking.controllers;
 
+import com.example.hotelbooking.dao.HotelDao;
+import com.example.hotelbooking.dao.ReservationDao;
 import com.example.hotelbooking.database.DatabaseManager;
+import com.example.hotelbooking.models.Hotel;
 import com.example.hotelbooking.models.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainController {
     @FXML
@@ -96,7 +100,7 @@ public class MainController {
             private final Button deleteButton = new Button("Usuń");
 
             {
-                ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/icons/trash.jpg")));
+                ImageView icon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/trash.jpg"))));
                 icon.setFitWidth(16);
                 icon.setFitHeight(16);
                 deleteButton.setGraphic(icon);
@@ -107,7 +111,7 @@ public class MainController {
 
                 deleteButton.setOnAction(event -> {
                     Reservation reservation = getTableView().getItems().get(getIndex());
-                    DatabaseManager.deleteReservationById(reservation.getId());
+                    ReservationDao.deleteReservation(reservation.getId());
                     loadReservationsForHotel(getHotelNameById(selectedHotelId));
                 });
 
@@ -120,7 +124,7 @@ public class MainController {
 
                     alert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.OK) {
-                            DatabaseManager.deleteReservationById(reservation.getId());
+                            ReservationDao.deleteReservation(reservation.getId());
                             getTableView().getItems().remove(reservation);
                         }
                     });
@@ -144,26 +148,26 @@ public class MainController {
         int hotelId = getHotelIdByName(hotelName);
 
         if (hotelId != -1) {
-            reservationData.setAll(DatabaseManager.getReservationsByHotelId(hotelId));
+            reservationData.setAll(ReservationDao.getReservationsByHotelId(hotelId));
         }
     }
 
     public void loadReservationsForHotel(int hotelId) {
         if (hotelId != -1) {
-            reservationData.setAll(DatabaseManager.getReservationsByHotelId(hotelId));
+            reservationData.setAll(ReservationDao.getReservationsByHotelId(hotelId));
         }
     }
 
     public void loadHotels() {
         hotelList.getItems().clear();
-        hotelList.getItems().addAll(DatabaseManager.getAllHotels());
+        hotelList.getItems().addAll(HotelDao.getAllHotels().stream().map(Hotel::getName).toList());
     }
 
     private int getHotelIdByName(String name) {
-        return DatabaseManager.getHotelIdByName(name);
+        return HotelDao.getHotelIdByName(name);
     }
 
     private String getHotelNameById(int id) {
-        return DatabaseManager.getHotelNameById(id);
+        return HotelDao.getHotelNameById(id);
     }
 }

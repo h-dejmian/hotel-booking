@@ -1,6 +1,8 @@
 package com.example.hotelbooking.controllers;
 
+import com.example.hotelbooking.dao.HotelDao;
 import com.example.hotelbooking.database.DatabaseManager;
+import com.example.hotelbooking.models.Hotel;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -22,7 +24,7 @@ public class AddHotelController {
     private void saveHotel() {
         String hotelName = hotelNameField.getText();
         if (!hotelName.isEmpty()) {
-            DatabaseManager.addHotel(hotelName);
+            HotelDao.saveHotel(new Hotel(hotelName));
             System.out.println("Dodano hotel: " + hotelName);
             mainController.loadHotels();
             ((Stage) hotelNameField.getScene().getWindow()).close();

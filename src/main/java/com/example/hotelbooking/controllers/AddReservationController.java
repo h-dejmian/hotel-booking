@@ -1,6 +1,10 @@
 package com.example.hotelbooking.controllers;
 
+import com.example.hotelbooking.dao.HotelDao;
+import com.example.hotelbooking.dao.ReservationDao;
 import com.example.hotelbooking.database.DatabaseManager;
+import com.example.hotelbooking.models.Hotel;
+import com.example.hotelbooking.models.Reservation;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -24,13 +28,14 @@ public class AddReservationController {
     private void saveReservation() {
         String guestName = guestNameField.getText();
         LocalDate date = datePicker.getValue();
+        Hotel hotel = HotelDao.getHotelById(hotelId);
 
         if (guestName.isEmpty() || date == null) {
             System.out.println("Wypełnij wszystkie pola!");
             return;
         }
 
-        DatabaseManager.addReservation(guestName, date.toString(), hotelId);
+        ReservationDao.saveReservation(new Reservation(guestName, date, hotel));
         mainController.loadReservationsForHotel(hotelId);
 
         System.out.println("Dodano rezerwację dla: " + guestName);

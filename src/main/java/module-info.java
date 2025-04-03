@@ -4,7 +4,7 @@ module com.example.hotelbooking {
     requires java.sql;
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
-
+    requires java.naming;
 
     opens com.example.hotelbooking to javafx.fxml;
     exports com.example.hotelbooking;

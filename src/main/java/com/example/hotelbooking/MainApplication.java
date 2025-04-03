@@ -17,10 +17,10 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        EntityManager em = HibernateUtil.getEntityManager();
-        System.out.println("✅ Połączenie z bazą działa!");
-        em.close();
-        HibernateUtil.close();
+//        EntityManager em = HibernateUtil.getEntityManager();
+//        System.out.println("✅ Połączenie z bazą działa!");
+//        em.close();
+//        HibernateUtil.close();
     }
 
 

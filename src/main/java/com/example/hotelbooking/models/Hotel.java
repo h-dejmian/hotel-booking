@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Table(name = "hotels")
 public class Hotel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column
@@ -16,6 +16,14 @@ public class Hotel {
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+
+    public Hotel() {
+    }
+
+    public Hotel(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Hotel(String name) {
         this.name = name;
@@ -25,7 +33,15 @@ public class Hotel {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<Reservation> getReservations() {
         return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
