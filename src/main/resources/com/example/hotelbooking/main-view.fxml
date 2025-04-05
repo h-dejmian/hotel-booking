@@ -37,7 +37,7 @@
                 <columns>
                     <TableColumn fx:id="guestColumn" text="Gość"/>
                     <TableColumn fx:id="dateColumn" text="Data"/>
-                    <TableColumn fx:id="deleteColumn" text="Akcja" />
+                    <TableColumn fx:id="actionColumn" text="Akcja" />
                 </columns>
             </TableView>
         </VBox>

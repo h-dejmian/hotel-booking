@@ -2,7 +2,6 @@ package com.example.hotelbooking.controllers;
 
 import com.example.hotelbooking.dao.HotelDao;
 import com.example.hotelbooking.dao.ReservationDao;
-import com.example.hotelbooking.database.DatabaseManager;
 import com.example.hotelbooking.models.Hotel;
 import com.example.hotelbooking.models.Reservation;
 import javafx.collections.FXCollections;
@@ -14,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class MainController {
     @FXML
     private TableColumn<Reservation, String> dateColumn;
     @FXML
-    private TableColumn<Reservation, Void> deleteColumn;
+    private TableColumn<Reservation, Void> actionColumn;
 
     private ObservableList<Reservation> reservationData = FXCollections.observableArrayList();
 
@@ -92,28 +92,27 @@ public class MainController {
             }
         });
 
-        addDeleteButtonToTable();
+        configureActionColumn();
     }
 
-    private void addDeleteButtonToTable() {
-        deleteColumn.setCellFactory( param -> new TableCell<>() {
-            private final Button deleteButton = new Button("Usuń");
+    private void configureActionColumn() {
+        actionColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button();
+            private final Button detailsButton = new Button();
 
             {
-                ImageView icon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/trash.jpg"))));
+                ImageView icon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/question.png"))));
+                icon.setFitWidth(16);
+                icon.setFitHeight(16);
+                detailsButton.setGraphic(icon);
+
+                icon = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/trash.jpg"))));
                 icon.setFitWidth(16);
                 icon.setFitHeight(16);
                 deleteButton.setGraphic(icon);
 
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-                deleteButton.setOnMouseEntered(e -> deleteButton.setStyle("-fx-background-color: #ffdddd; -fx-cursor: hand;"));
-                deleteButton.setOnMouseExited(e -> deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;"));
-
-                deleteButton.setOnAction(event -> {
-                    Reservation reservation = getTableView().getItems().get(getIndex());
-                    ReservationDao.deleteReservation(reservation.getId());
-                    loadReservationsForHotel(getHotelNameById(selectedHotelId));
-                });
+                detailsButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
                 deleteButton.setOnAction(event -> {
                     Reservation reservation = getTableView().getItems().get(getIndex());
@@ -129,6 +128,11 @@ public class MainController {
                         }
                     });
                 });
+
+                detailsButton.setOnAction(event -> {
+                    Reservation reservation = getTableView().getItems().get(getIndex());
+                    showReservationDetails(reservation);
+                });
             }
 
             @Override
@@ -136,12 +140,29 @@ public class MainController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
-                }
-                else {
-                    setGraphic(deleteButton);
+                } else {
+                    HBox buttonBox = new HBox(5, detailsButton, deleteButton);
+                    setGraphic(buttonBox);
                 }
             }
         });
+    }
+
+    private void showReservationDetails(Reservation reservation) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/reservation-details.fxml"));
+            Scene scene = new Scene(loader.load(), 300, 200);
+
+            ReservationDetailsController controller = loader.getController();
+            controller.setReservation(reservation);
+
+            Stage stage = new Stage();
+            stage.setTitle("Szczegóły Rezerwacji");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadReservationsForHotel(String hotelName) {

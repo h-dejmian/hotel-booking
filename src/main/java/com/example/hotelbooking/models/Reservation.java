@@ -29,6 +29,10 @@ public class Reservation {
         return guest;
     }
 
+    public void setGuest(String guest) {
+        this.guest = guest;
+    }
+
     public LocalDate getDate() {
         return date;
     }
