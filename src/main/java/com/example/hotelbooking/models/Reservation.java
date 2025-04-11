@@ -37,6 +37,10 @@ public class Reservation {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }

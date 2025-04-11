@@ -76,6 +76,26 @@ public class MainController {
     }
 
     @FXML
+    private void showReservationDetails(Reservation reservation) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/reservation-details.fxml"));
+            Scene scene = new Scene(loader.load(), 300, 200);
+
+            ReservationDetailsController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setHotelId(selectedHotelId);
+            controller.setReservation(reservation);
+
+            Stage stage = new Stage();
+            stage.setTitle("Szczegóły Rezerwacji");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void initialize() {
         loadHotels();
 
@@ -148,22 +168,7 @@ public class MainController {
         });
     }
 
-    private void showReservationDetails(Reservation reservation) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/reservation-details.fxml"));
-            Scene scene = new Scene(loader.load(), 300, 200);
 
-            ReservationDetailsController controller = loader.getController();
-            controller.setReservation(reservation);
-
-            Stage stage = new Stage();
-            stage.setTitle("Szczegóły Rezerwacji");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void loadReservationsForHotel(String hotelName) {
         int hotelId = getHotelIdByName(hotelName);
