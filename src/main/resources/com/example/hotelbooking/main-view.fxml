@@ -35,9 +35,9 @@
             <Label text="Reservations" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
             <TableView fx:id="reservationList">
                 <columns>
-                    <TableColumn fx:id="guestColumn" text="Gość"/>
-                    <TableColumn fx:id="dateColumn" text="Data"/>
-                    <TableColumn fx:id="actionColumn" text="Akcja" />
+                    <TableColumn fx:id="guestColumn" prefWidth="150" text="Gość"/>
+                    <TableColumn fx:id="dateColumn" prefWidth="120" text="Data"/>
+                    <TableColumn fx:id="actionColumn" prefWidth="100" text="Akcja" />
                 </columns>
             </TableView>
         </VBox>

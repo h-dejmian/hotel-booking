@@ -41,6 +41,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/add-hotel-view.fxml"));
             Scene scene = new Scene(loader.load(), 300, 200);
+            scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
 
             AddHotelController addHotelController = loader.getController();
             addHotelController.setMainController(this);
@@ -60,6 +61,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/add-reservation-view.fxml"));
             Scene scene = new Scene(loader.load(), 300, 200);
+            scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
 
             AddReservationController controller = loader.getController();
             controller.setHotelId(selectedHotelId);
@@ -80,6 +82,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/reservation-details.fxml"));
             Scene scene = new Scene(loader.load(), 300, 200);
+            scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
 
             ReservationDetailsController controller = loader.getController();
             controller.setMainController(this);
