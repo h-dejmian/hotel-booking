@@ -199,4 +199,25 @@ public class MainController {
     private String getHotelNameById(int id) {
         return HotelDao.getHotelNameById(id);
     }
+
+    public ObservableList<Reservation> getReservationData() {
+        return reservationData;
+    }
+
+    public void setReservationList(TableView<Reservation> reservationList) {
+        this.reservationList = reservationList;
+    }
+
+    public void setGuestColumn(TableColumn<Reservation, String> guestColumn) {
+        this.guestColumn = guestColumn;
+    }
+
+    public void setDateColumn(TableColumn<Reservation, String> dateColumn) {
+        this.dateColumn = dateColumn;
+    }
+
+    public void setReservationData(ObservableList<Reservation> reservationData) {
+        this.reservationData = reservationData;
+        this.reservationList.setItems(reservationData);
+    }
 }
