@@ -25,7 +25,7 @@ public class AddReservationController {
     }
 
     @FXML
-    private void saveReservation() {
+    public void saveReservation() {
         String guestName = guestNameField.getText();
         LocalDate date = datePicker.getValue();
         Hotel hotel = HotelDao.getHotelById(hotelId);
@@ -48,5 +48,21 @@ public class AddReservationController {
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    public TextField getGuestNameField() {
+        return guestNameField;
+    }
+
+    public void setGuestNameField(TextField guestNameField) {
+        this.guestNameField = guestNameField;
+    }
+
+    public DatePicker getDatePicker() {
+        return datePicker;
+    }
+
+    public void setDatePicker(DatePicker datePicker) {
+        this.datePicker = datePicker;
     }
 }
