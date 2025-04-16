@@ -1,7 +1,9 @@
 package com.example.hotelbooking.controllers;
 
 import com.example.hotelbooking.dao.HotelDao;
+import com.example.hotelbooking.dao.HotelDaoImpl;
 import com.example.hotelbooking.dao.ReservationDao;
+import com.example.hotelbooking.dao.ReservationDaoImpl;
 import com.example.hotelbooking.models.Hotel;
 import com.example.hotelbooking.models.Reservation;
 import javafx.collections.FXCollections;
@@ -33,6 +35,8 @@ public class MainController {
     private TableColumn<Reservation, String> dateColumn;
     @FXML
     private TableColumn<Reservation, Void> actionColumn;
+    private final ReservationDao reservationDao = new ReservationDaoImpl();
+    private final HotelDao hotelDao = new HotelDaoImpl();
 
     private ObservableList<Reservation> reservationData = FXCollections.observableArrayList();
 
@@ -45,6 +49,7 @@ public class MainController {
 
             AddHotelController addHotelController = loader.getController();
             addHotelController.setMainController(this);
+            addHotelController.setHotelDao(hotelDao);
 
             Stage stage = new Stage();
             stage.setTitle("Nowy Hotel");
@@ -66,6 +71,8 @@ public class MainController {
             AddReservationController controller = loader.getController();
             controller.setHotelId(selectedHotelId);
             controller.setMainController(this);
+            controller.setReservationDao(reservationDao);
+            controller.setHotelDao(hotelDao);
 
             Stage stage = new Stage();
             stage.setTitle("Nowa Rezerwacja");
@@ -88,6 +95,7 @@ public class MainController {
             controller.setMainController(this);
             controller.setHotelId(selectedHotelId);
             controller.setReservation(reservation);
+            controller.setReservationDao(reservationDao);
 
             Stage stage = new Stage();
             stage.setTitle("Szczegóły Rezerwacji");
@@ -146,7 +154,7 @@ public class MainController {
 
                     alert.showAndWait().ifPresent(response -> {
                         if (response == ButtonType.OK) {
-                            ReservationDao.deleteReservation(reservation.getId());
+                            reservationDao.deleteReservation(reservation.getId());
                             getTableView().getItems().remove(reservation);
                         }
                     });
@@ -172,52 +180,26 @@ public class MainController {
     }
 
 
-
     public void loadReservationsForHotel(String hotelName) {
         int hotelId = getHotelIdByName(hotelName);
 
         if (hotelId != -1) {
-            reservationData.setAll(ReservationDao.getReservationsByHotelId(hotelId));
+            reservationData.setAll(reservationDao.getReservationsByHotelId(hotelId));
         }
     }
 
     public void loadReservationsForHotel(int hotelId) {
         if (hotelId != -1) {
-            reservationData.setAll(ReservationDao.getReservationsByHotelId(hotelId));
+            reservationData.setAll(reservationDao.getReservationsByHotelId(hotelId));
         }
     }
 
     public void loadHotels() {
         hotelList.getItems().clear();
-        hotelList.getItems().addAll(HotelDao.getAllHotels().stream().map(Hotel::getName).toList());
+        hotelList.getItems().addAll(hotelDao.getAllHotels().stream().map(Hotel::getName).toList());
     }
 
     private int getHotelIdByName(String name) {
-        return HotelDao.getHotelIdByName(name);
-    }
-
-    private String getHotelNameById(int id) {
-        return HotelDao.getHotelNameById(id);
-    }
-
-    public ObservableList<Reservation> getReservationData() {
-        return reservationData;
-    }
-
-    public void setReservationList(TableView<Reservation> reservationList) {
-        this.reservationList = reservationList;
-    }
-
-    public void setGuestColumn(TableColumn<Reservation, String> guestColumn) {
-        this.guestColumn = guestColumn;
-    }
-
-    public void setDateColumn(TableColumn<Reservation, String> dateColumn) {
-        this.dateColumn = dateColumn;
-    }
-
-    public void setReservationData(ObservableList<Reservation> reservationData) {
-        this.reservationData = reservationData;
-        this.reservationList.setItems(reservationData);
+        return hotelDao.getHotelIdByName(name);
     }
 }

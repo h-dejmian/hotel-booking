@@ -1,6 +1,7 @@
 package com.example.hotelbooking.controllers;
 
 import com.example.hotelbooking.dao.ReservationDao;
+import com.example.hotelbooking.dao.ReservationDaoImpl;
 import com.example.hotelbooking.models.Reservation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -36,6 +37,7 @@ public class ReservationDetailsController {
 
     private int hotelId;
     private Reservation reservation;
+    private ReservationDao reservationDao;
 
     private void updateDetails() {
         guestNameLabel.setText("Gość: " + reservation.getGuest());
@@ -73,7 +75,7 @@ public class ReservationDetailsController {
         reservation.setGuest(guestNameField.getText());
         reservation.setDate(reservationDate.getValue());
 
-        ReservationDao.saveReservation(reservation);
+        reservationDao.saveReservation(reservation);
 
         updateDetails();
         mainController.loadReservationsForHotel(hotelId);
@@ -89,5 +91,9 @@ public class ReservationDetailsController {
     }
     public void setHotelId(int hotelId) {
         this.hotelId = hotelId;
+    }
+
+    public void setReservationDao(ReservationDao reservationDao) {
+        this.reservationDao = reservationDao;
     }
 }

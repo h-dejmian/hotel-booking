@@ -1,7 +1,7 @@
 package com.example.hotelbooking.controllers;
 
 import com.example.hotelbooking.dao.HotelDao;
-import com.example.hotelbooking.database.DatabaseManager;
+import com.example.hotelbooking.dao.HotelDaoImpl;
 import com.example.hotelbooking.models.Hotel;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,6 +12,7 @@ public class AddHotelController {
     private TextField hotelNameField;
     @FXML
     private MainController mainController;
+    private HotelDao hotelDao;
 
     public AddHotelController() {
     }
@@ -24,10 +25,14 @@ public class AddHotelController {
     private void saveHotel() {
         String hotelName = hotelNameField.getText();
         if (!hotelName.isEmpty()) {
-            HotelDao.saveHotel(new Hotel(hotelName));
+            hotelDao.saveHotel(new Hotel(hotelName));
             System.out.println("Dodano hotel: " + hotelName);
             mainController.loadHotels();
             ((Stage) hotelNameField.getScene().getWindow()).close();
         }
+    }
+
+    public void setHotelDao(HotelDao hotelDao) {
+        this.hotelDao = hotelDao;
     }
 }
