@@ -41,9 +41,9 @@ public class MainController {
     private ObservableList<Reservation> reservationData = FXCollections.observableArrayList();
 
     @FXML
-    private void addHotel() {
+    public void addHotel() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hotelbooking/add-hotel-view.fxml"));
+            FXMLLoader loader = createFXMLLoader("/com/example/hotelbooking/add-hotel-view.fxml");;
             Scene scene = new Scene(loader.load(), 300, 200);
             scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
 
@@ -201,5 +201,9 @@ public class MainController {
 
     private int getHotelIdByName(String name) {
         return hotelDao.getHotelIdByName(name);
+    }
+
+    public FXMLLoader createFXMLLoader(String path) {
+        return new FXMLLoader(getClass().getResource(path));
     }
 }
